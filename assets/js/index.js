@@ -5,7 +5,7 @@ async function indicadorEconomicoDolar() {
         //console.log(data.serie.slice(0,10));
         return data.serie.slice(0,10)
     } catch (error) {
-        alert(error.message);
+        alert(error.message + ' Usando valores guardados previamente');
         const res = await fetch("./assets/js/mindicador.json");
         const data = await res.json();
         //console.log([data.dolar]);
@@ -20,7 +20,7 @@ async function indicadorEconomicoEuro() {
         //console.log(data.serie.slice(0,10));
         return data.serie.slice(0,10)
     } catch (error) {
-        alert(error.message);
+        alert(error.message + ' Usando valores guardados previamente');
         const res = await fetch("./assets/js/mindicador.json");
         const data = await res.json();
         //console.log([data.euro]);
