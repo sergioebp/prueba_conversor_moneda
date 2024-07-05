@@ -11,7 +11,7 @@ async function indicadorEconomicoDolar() {
         //console.log([data.dolar]);
         return [data.dolar]
     }
-}
+};
 
 async function indicadorEconomicoEuro() {
     try {
@@ -26,26 +26,55 @@ async function indicadorEconomicoEuro() {
         //console.log([data.euro]);
         return [data.euro]
     }
-}
+};
 
-//indicadorEconomicoDolar()
-//indicadorEconomicoEuro()
+let generateGraph = function(result) {
+    var fechas = result.map(function (fecha) {
+        return fecha.fecha.slice(0,10)
+    });
+    var valores = result.map(function (valor) {
+        return Number(valor.valor);
+    })
+    const config = {
+        type: 'line',
+        data: {
+            labels: fechas,
+            datasets: [
+                {
+                    label: 'valor',
+                    backgroundColor: 'red',
+                    data: valores
+                }
+            ]
+        }
+    };
+    if (document.getElementById('myChart') !== null) {
+        //grafica.innerHTML('')
+        document.getElementById('myChart').remove();
+    };
+    grafica.innerHTML += '<canvas id="myChart"></canvas>';
+    const chartDOM = document.getElementById('myChart');
+    new Chart(chartDOM, config);
+};
 
-let input = document.getElementById("input")
-let select = document.getElementById("select")
-let button = document.getElementById("button")
-let resultado = document.getElementById("resultado")
+let input = document.getElementById("input");
+let select = document.getElementById("select");
+let button = document.getElementById("button");
+let resultado = document.getElementById("resultado");
+let grafica = document.getElementById("grafica");
 
 button.addEventListener("click", function() {
     if (input.value == '') {
         resultado.innerHTML = 'ingresa un valor válido'
     }else if (select.value  == 'dolar') {
         indicadorEconomicoDolar().then(function(result) {
-            resultado.innerHTML = `Resultado: $${((input.value)/(result[0].valor)).toFixed(2)}`
+            resultado.innerHTML = `Resultado: $${((input.value)/(result[0].valor)).toFixed(2)}`;
+            generateGraph(result)
           })
     }else if (select.value  == 'euro') {
         indicadorEconomicoEuro().then(function(result) {
-            resultado.innerHTML = `Resultado: €${((input.value)/(result[0].valor)).toFixed(2)}`
+            resultado.innerHTML = `Resultado: €${((input.value)/(result[0].valor)).toFixed(2)}`;
+            generateGraph(result)
           })
     }
 });
